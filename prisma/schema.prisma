@@ -10,3 +10,113 @@ datasource db {
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
+
+model User {
+  id            String          @id @default(uuid())
+  username      String          @unique @db.VarChar(20)
+  email         String          @unique
+  password      String
+  image         String
+  githubUrl     String
+  Post          Post[]
+  Like          Like[]
+  Comment       Comment[]
+  UserChallenge UserChallenge[]
+
+  @@map("users")
+}
+
+model Post {
+  id      String    @id @default(uuid())
+  text    String    @db.VarChar(255)
+  User    User      @relation(fields: [userId], references: [id])
+  userId  String
+  Like    Like[]
+  Comment Comment[]
+
+  @@map("posts")
+}
+
+model Like {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+  Post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  @@map("likes")
+}
+
+model Comment {
+  id     String @id @default(uuid())
+  text   String @db.VarChar(255)
+  Post   Post   @relation(fields: [postId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
+  postId String
+  userId String
+
+  @@map("comments")
+}
+
+model Summary {
+  id     String   @id @default(uuid())
+  title  String
+  Method Method[]
+
+  @@map("summary")
+}
+
+model Method {
+  id          String  @id @default(uuid())
+  image       String
+  title       String
+  description String
+  Summary     Summary @relation(fields: [summaryId], references: [id])
+  summaryId   String
+  Topic       Topic[]
+
+  @@map("methods")
+}
+
+model Topic {
+  id        String      @id @default(uuid())
+  Method    Method      @relation(fields: [methodId], references: [id])
+  methodId  String
+  Challenge Challenge[]
+
+  @@map("topics")
+}
+
+model Challenge {
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  solution      String
+  Topic         Topic           @relation(fields: [topicId], references: [id])
+  topicId       String
+  Input         Input[]
+  UserChallenge UserChallenge[]
+
+  @@map("challenges")
+}
+
+model Input {
+  id          String    @id @default(uuid())
+  input       String
+  output      String
+  Challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
+
+  @@map("inputs")
+}
+
+model UserChallenge {
+  id          String    @id @default(uuid())
+  isSolved    Boolean
+  Challenge   Challenge @relation(fields: [challengeId], references: [id])
+  User        User      @relation(fields: [userId], references: [id])
+  challengeId String
+  userId      String
+
+  @@map("userChallenge")
+}
