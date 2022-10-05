@@ -1,5 +1,8 @@
 # folders
 node_modules
+package-lock.json
 
 # files
 .env
+.env.test
+
