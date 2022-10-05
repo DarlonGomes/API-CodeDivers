@@ -16,73 +16,83 @@ model User {
   username      String          @unique @db.VarChar(20)
   email         String          @unique
   password      String
-  image         String
-  githubUrl     String
-  Post          Post[]
-  Like          Like[]
-  Comment       Comment[]
-  UserChallenge UserChallenge[]
+  image         String          @default("https://www.svgrepo.com/show/93630/scuba-diver.svg")
+  githubUrl     String          @default("null")
+  post          Post[]
+  like          Like[]
+  comment       Comment[]
+  userChallenge UserChallenge[]
+  created_at DateTime @default(now())
 
   @@map("users")
 }
 
 model Post {
-  id      String    @id @default(uuid())
-  text    String    @db.VarChar(255)
-  User    User      @relation(fields: [userId], references: [id])
-  userId  String
-  Like    Like[]
-  Comment Comment[]
+  id         String    @id @default(uuid())
+  text       String    @db.VarChar(255)
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  like       Like[]
+  comment    Comment[]
+  date       String
+  created_at DateTime  @default(now())
 
   @@map("posts")
 }
 
 model Like {
   id     String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   userId String
-  Post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id])
   postId String
+
+  created_at DateTime @default(now())
 
   @@map("likes")
 }
 
 model Comment {
-  id     String @id @default(uuid())
-  text   String @db.VarChar(255)
-  Post   Post   @relation(fields: [postId], references: [id])
-  User   User   @relation(fields: [userId], references: [id])
-  postId String
-  userId String
+  id         String   @id @default(uuid())
+  text       String   @db.VarChar(255)
+  post       Post     @relation(fields: [postId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  postId     String
+  userId     String
+  date       String
+  created_at DateTime @default(now())
 
   @@map("comments")
 }
 
 model Summary {
-  id     String   @id @default(uuid())
-  title  String
-  Method Method[]
+  id         String   @id @default(uuid())
+  title      String
+  method     Method[]
+  created_at DateTime @default(now())
 
   @@map("summary")
 }
 
 model Method {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   image       String
   title       String
   description String
-  Summary     Summary @relation(fields: [summaryId], references: [id])
+  summary     Summary  @relation(fields: [summaryId], references: [id])
   summaryId   String
-  Topic       Topic[]
+  topic       Topic[]
+  created_at  DateTime @default(now())
 
   @@map("methods")
 }
 
 model Topic {
-  id        String      @id @default(uuid())
-  Method    Method      @relation(fields: [methodId], references: [id])
-  methodId  String
-  Challenge Challenge[]
+  id         String      @id @default(uuid())
+  method     Method      @relation(fields: [methodId], references: [id])
+  methodId   String
+  challenge  Challenge[]
+  created_at DateTime    @default(now())
 
   @@map("topics")
 }
@@ -92,10 +102,11 @@ model Challenge {
   title         String
   description   String
   solution      String
-  Topic         Topic           @relation(fields: [topicId], references: [id])
+  topic         Topic           @relation(fields: [topicId], references: [id])
   topicId       String
-  Input         Input[]
-  UserChallenge UserChallenge[]
+  input         Input[]
+  user_challenge UserChallenge[]
+  created_at    DateTime        @default(now())
 
   @@map("challenges")
 }
@@ -104,8 +115,9 @@ model Input {
   id          String    @id @default(uuid())
   input       String
   output      String
-  Challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
   challengeId String
+  created_at  DateTime  @default(now())
 
   @@map("inputs")
 }
@@ -113,10 +125,11 @@ model Input {
 model UserChallenge {
   id          String    @id @default(uuid())
   isSolved    Boolean
-  Challenge   Challenge @relation(fields: [challengeId], references: [id])
-  User        User      @relation(fields: [userId], references: [id])
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
   challengeId String
   userId      String
+  created_at  DateTime  @default(now())
 
-  @@map("userChallenge")
+  @@map("user_challenge")
 }

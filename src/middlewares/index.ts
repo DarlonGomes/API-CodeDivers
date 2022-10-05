@@ -1,1 +1,2 @@
-export { errorHandler } from "./error"
+export { errorHandler } from "./error";
+export {tokenValidation} from "./auth"
