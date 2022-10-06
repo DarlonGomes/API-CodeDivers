@@ -20,7 +20,7 @@ export async function startSession(req: Request, res: Response){
     await userService.ensurePasswordIsValid(request.password, account!.password!);
     const config = await userService.generateAccessToken(account!.id);
     delete account!.password
-
+    
     return res.status(200).json({user: account, config: config})
 }
 

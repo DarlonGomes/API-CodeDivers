@@ -7,12 +7,13 @@ import jwt from "jsonwebtoken";
 
 export async function ensureFieldIsValid(field: string, value:string, method: string){
     const response  = await userRepository.search(field, value)
-
+    
     if(field === "email"){
         if(response && method === "sign-up") throw new ErrorInfo("error_conflict", "This email already have been used");
         if(!response && method === "sign-in") throw new ErrorInfo("error_not_found", "This email doesn't exist" );
+    }else{
+        if(!response) throw new ErrorInfo("error_not_found", `This ${field} doesn't exist` );
     }
-    if(!response) throw new ErrorInfo("error_not_found", `This ${field} doesn't exist` );
     return response
 }
 

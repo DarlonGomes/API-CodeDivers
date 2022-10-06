@@ -15,5 +15,11 @@ export const joiValidation = {
         if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
         next();
     },
+    userUpdate: (req: Request, _res:Response, next: NextFunction) => {
+        const request = req.body;
+        const validation = authSchema.update.validate(request, {abortEarly: false});
+        if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
+        next();
+    }
     
 }

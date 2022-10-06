@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { tokenValidation } from "../middlewares";
 import { joiValidation } from "../middlewares/joi";
+import { userController } from "../controllers";
 
-const auth = Router();
+const authRouter = Router();
 
-auth.post("/sign-in", joiValidation.signIn ,tokenValidation);
-auth.post("/sign-up", joiValidation.signUp)
-export default auth;
+authRouter.post("/sign-in", joiValidation.signIn, userController.startSession);
+authRouter.post("/sign-up", joiValidation.signUp, userController.createUser);
+authRouter.patch("/update", joiValidation.userUpdate, tokenValidation, userController.fieldUpdate)
+export default authRouter;
