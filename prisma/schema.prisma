@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(uuid())
+  username      String          @unique @db.VarChar(20)
+  email         String          @unique
+  password      String
+  image         String          @default("https://www.svgrepo.com/show/93630/scuba-diver.svg")
+  githubUrl     String          @default("null")
+  post          Post[]
+  like          Like[]
+  comment       Comment[]
+  userChallenge UserChallenge[]
+  created_at DateTime @default(now())
+
+  @@map("users")
+}
+
+model Post {
+  id         String    @id @default(uuid())
+  text       String    @db.VarChar(255)
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  like       Like[]
+  comment    Comment[]
+  date       String
+  created_at DateTime  @default(now())
+
+  @@map("posts")
+}
+
+model Like {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  created_at DateTime @default(now())
+
+  @@map("likes")
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  text       String   @db.VarChar(255)
+  post       Post     @relation(fields: [postId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  postId     String
+  userId     String
+  date       String
+  created_at DateTime @default(now())
+
+  @@map("comments")
+}
+
+model Summary {
+  id         String   @id @default(uuid())
+  title      String
+  method     Method[]
+  created_at DateTime @default(now())
+
+  @@map("summary")
+}
+
+model Method {
+  id          String   @id @default(uuid())
+  image       String
+  title       String
+  description String
+  summary     Summary  @relation(fields: [summaryId], references: [id])
+  summaryId   String
+  topic       Topic[]
+  created_at  DateTime @default(now())
+
+  @@map("methods")
+}
+
+model Topic {
+  id         String      @id @default(uuid())
+  method     Method      @relation(fields: [methodId], references: [id])
+  methodId   String
+  challenge  Challenge[]
+  created_at DateTime    @default(now())
+
+  @@map("topics")
+}
+
+model Challenge {
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  solution      String
+  topic         Topic           @relation(fields: [topicId], references: [id])
+  topicId       String
+  input         Input[]
+  user_challenge UserChallenge[]
+  created_at    DateTime        @default(now())
+
+  @@map("challenges")
+}
+
+model Input {
+  id          String    @id @default(uuid())
+  input       String
+  output      String
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
+  created_at  DateTime  @default(now())
+
+  @@map("inputs")
+}
+
+model UserChallenge {
+  id          String    @id @default(uuid())
+  isSolved    Boolean
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+  challengeId String
+  userId      String
+  created_at  DateTime  @default(now())
+
+  @@map("user_challenge")
+}
