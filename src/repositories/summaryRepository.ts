@@ -1,9 +1,11 @@
 import db from "../database/prisma";
-import { InsertSummary, Summary_Method } from "../interfaces/summaryInterface";
+import { Summary_Method } from "../interfaces/summaryInterface";
 
-export async function create (summary: InsertSummary){
+export async function create (title: string){
     await db.summary.create({
-        data: summary
+        data:{
+            title: title
+        } 
     })
 }
 
@@ -14,7 +16,13 @@ export async function gatherSummaries (){
             title: true,
             created_at: true,
             methods:{
-                include:{
+                select:{
+                    id: true,
+                    image: true,
+                    title: true,
+                    description: true,
+                    summaryId: true,
+                    created_at: true,
                 }
             }
         }
@@ -23,3 +31,11 @@ export async function gatherSummaries (){
     return summaryList
 }
 
+export async function search (title: string){
+    const summary = await db.summary.findUnique({
+        where:{
+            title: title
+        }
+    });
+    return summary
+}

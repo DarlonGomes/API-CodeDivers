@@ -89,7 +89,7 @@ model Method {
 
 model Topic {
   id         String      @id @default(uuid())
-  title      String
+  title      String      @unique
   method     Method      @relation(fields: [methodId], references: [id])
   methodId   String
   challenges Challenge[]

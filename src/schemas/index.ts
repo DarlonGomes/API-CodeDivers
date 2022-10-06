@@ -1,1 +1,1 @@
-export {authSchema} from "./auth"
+export {authSchema} from "./authSchema"
