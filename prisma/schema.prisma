@@ -67,8 +67,8 @@ model Comment {
 
 model Summary {
   id         String   @id @default(uuid())
-  title      String
-  methods     Method[]
+  title      String   @unique
+  methods    Method[]
   created_at DateTime @default(now())
 
   @@map("summary")
@@ -77,11 +77,11 @@ model Summary {
 model Method {
   id          String   @id @default(uuid())
   image       String
-  title       String
+  title       String   @unique
   description String
   summary     Summary  @relation(fields: [summaryId], references: [id])
   summaryId   String
-  topics       Topic[]
+  topics      Topic[]
   created_at  DateTime @default(now())
 
   @@map("methods")
@@ -92,7 +92,7 @@ model Topic {
   title      String
   method     Method      @relation(fields: [methodId], references: [id])
   methodId   String
-  challenges  Challenge[]
+  challenges Challenge[]
   created_at DateTime    @default(now())
 
   @@map("topics")
@@ -105,7 +105,7 @@ model Challenge {
   solution       String
   topic          Topic           @relation(fields: [topicId], references: [id])
   topicId        String
-  inputs          Input[]
+  inputs         Input[]
   user_challenge UserChallenge[]
   created_at     DateTime        @default(now())
 
