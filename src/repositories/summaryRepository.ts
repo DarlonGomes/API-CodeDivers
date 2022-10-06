@@ -9,7 +9,7 @@ export async function create (title: string){
     })
 }
 
-export async function gatherSummaries (){
+export async function findAll (){
     const summaryList : Summary_Method[] = await db.summary.findMany({
         select:{
             id: true,

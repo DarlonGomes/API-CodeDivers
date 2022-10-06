@@ -7,7 +7,7 @@ export async function create (data: InsertMethod){
     })
 }
 
-export async function gatherSummaries (){
+export async function findTopics (id: string){
     const methodList : Method_Topic[] = await db.method.findMany({
         select:{
             id: true,
@@ -24,6 +24,8 @@ export async function gatherSummaries (){
                     created_at: true,
                 }
             }
+        }, where:{
+            id: id
         }
     });
 

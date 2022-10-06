@@ -13,6 +13,6 @@ export async function insertNewSummary(title: string){
 }
 
 export async function gatherAllSummaries(){
-    const summaryList = await summaryRepository.gatherSummaries();
+    const summaryList = await summaryRepository.findAll();
     return summaryList
 }
