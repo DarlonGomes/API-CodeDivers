@@ -7,6 +7,7 @@ export async function create (data: InsertChallenge){
         data:{
             title: data.title,
             description: data.description,
+            code: data.code,
             solution: data.solution,
             topicId: data.topicId
         }

@@ -22,6 +22,7 @@ export async function findChallenges (id: string){
                     id: true,
                     title: true,
                     description: true,
+                    code:true,
                     solution: true,
                     topicId: true,
                     created_at: true,
