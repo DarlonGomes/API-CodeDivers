@@ -5,4 +5,4 @@ package-lock.json
 # files
 .env
 .env.test
-
+.env copy

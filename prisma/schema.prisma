@@ -22,7 +22,7 @@ model User {
   like          Like[]
   comment       Comment[]
   userChallenge UserChallenge[]
-  created_at DateTime @default(now())
+  created_at    DateTime        @default(now())
 
   @@map("users")
 }
@@ -67,8 +67,8 @@ model Comment {
 
 model Summary {
   id         String   @id @default(uuid())
-  title      String
-  method     Method[]
+  title      String   @unique
+  methods    Method[]
   created_at DateTime @default(now())
 
   @@map("summary")
@@ -77,11 +77,11 @@ model Summary {
 model Method {
   id          String   @id @default(uuid())
   image       String
-  title       String
+  title       String   @unique
   description String
   summary     Summary  @relation(fields: [summaryId], references: [id])
   summaryId   String
-  topic       Topic[]
+  topics      Topic[]
   created_at  DateTime @default(now())
 
   @@map("methods")
@@ -89,24 +89,26 @@ model Method {
 
 model Topic {
   id         String      @id @default(uuid())
+  title      String      @unique
   method     Method      @relation(fields: [methodId], references: [id])
   methodId   String
-  challenge  Challenge[]
+  challenges Challenge[]
   created_at DateTime    @default(now())
 
   @@map("topics")
 }
 
 model Challenge {
-  id            String          @id @default(uuid())
-  title         String
-  description   String
-  solution      String
-  topic         Topic           @relation(fields: [topicId], references: [id])
-  topicId       String
-  input         Input[]
+  id             String          @id @default(uuid())
+  title          String
+  description    String
+  code           String
+  solution       String
+  topic          Topic           @relation(fields: [topicId], references: [id])
+  topicId        String
+  inputs         Input[]
   user_challenge UserChallenge[]
-  created_at    DateTime        @default(now())
+  created_at     DateTime        @default(now())
 
   @@map("challenges")
 }
@@ -124,12 +126,14 @@ model Input {
 
 model UserChallenge {
   id          String    @id @default(uuid())
-  isSolved    Boolean
+  attempt     String
+  isSolved    Boolean   @default(false)
   challenge   Challenge @relation(fields: [challengeId], references: [id])
   user        User      @relation(fields: [userId], references: [id])
   challengeId String
   userId      String
   created_at  DateTime  @default(now())
 
+  @@unique([challengeId, userId])
   @@map("user_challenge")
 }

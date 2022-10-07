@@ -1,6 +1,5 @@
-import { Router } from "express";
-import authRouter from "./auth";
-const router = Router();
-
-router.use("/auth", authRouter)
-export default router;
+export { methodRouter } from "./methodRouter";
+export { summaryRouter } from "./summaryRouter";
+export { topicRouter } from "./topicRouter";
+export { authRouter } from "./userRouter";
+export { challengeRouter } from "./challengeRouter";

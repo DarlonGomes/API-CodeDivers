@@ -1,0 +1,32 @@
+services: 
+    db_codedivers:
+        image: postgres
+        container_name: db_codedivers
+        restart: always
+        ports:
+            - 2345:5432
+        env_file:
+            - .env
+        volumes:
+            - pg_codedivers:/var/lib/postgresql/data
+        networks:
+            - code_divers
+
+    node_app_codediver:
+        container_name: node_app_codediver
+        build: .
+        ports:
+            - 5000:5000
+        env_file:
+            - .env
+        depends_on:
+            - db_codedivers
+        networks:
+            - code_divers
+
+volumes:
+    pg_codedivers:
+
+networks:
+    code_divers:
+        driver: bridge
