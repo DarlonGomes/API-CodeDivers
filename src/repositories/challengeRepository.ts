@@ -24,10 +24,10 @@ export async function findByTopic (id: string){
     return challengeList
 }
 
-export async function search (id: string){
-    const challenge : Challenge | null = await db.challenge.findUnique({
+export async function search (title: string){
+    const challenge : Challenge | null = await db.challenge.findFirst({
         where:{
-            id: id
+            title: title
         }
     });
     return challenge

@@ -1,6 +1,11 @@
 import { Router } from "express";
+import {challengeController} from "../controllers";
 
-const challengeRouter = Router();
+import { tokenValidation, joiValidation } from "../middlewares";
 
 
-export default challengeRouter;
+export const challengeRouter = Router();
+
+challengeRouter.post("/create", tokenValidation, joiValidation.challengeInsertion, challengeController.handleChallengeInsertion);
+challengeRouter.get("", tokenValidation, challengeController.gatherChallengeInfo);
+

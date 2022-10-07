@@ -8,6 +8,7 @@ import { attemptService } from ".";
 
 export async function ensureThatChallengeDoesNotExist(title: string){
     const challenge = await challengeRepository.search(title);
+    console.log(challenge)
     if(challenge) throw new ErrorInfo("error_conflict", "This challenge title already exists");
 }
 
