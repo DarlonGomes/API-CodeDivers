@@ -7,7 +7,7 @@ export async function handleMethodInsertion( req: Request, res: Response){
     const {userId} = res.locals.userId;
 
     await userService.ensureFieldIsValid("id", userId, "default");
-    await topicService.ensureThatTopicDoesNotExist(request.title);
+    await topicService.ensureThatTopicIsValid("title",request.title);
     await topicService.insertNewTopic(request);
 
     return res.status(201).json({message: "Succesfull."})

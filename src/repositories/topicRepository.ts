@@ -35,10 +35,10 @@ export async function findChallenges (id: string){
     return topicList
 }
 
-export async function search (title: string){
+export async function search (field:string, value: string){
     const topic = await db.topic.findUnique({
         where:{
-            title: title
+            [field]: value
         }
     });
     return topic
