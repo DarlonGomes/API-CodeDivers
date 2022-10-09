@@ -121,6 +121,7 @@ model Input {
   challengeId String
   created_at  DateTime  @default(now())
 
+  @@unique([challengeId, id])
   @@map("inputs")
 }
 

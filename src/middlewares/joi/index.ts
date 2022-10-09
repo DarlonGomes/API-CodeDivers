@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorInfo } from "../error";
-import {authSchema, summarySchema, methodSchema, topicSchema, challengeSchema} from "../../schemas";
+import {authSchema, summarySchema, methodSchema, topicSchema, challengeSchema, inputSchema} from "../../schemas";
 
 
 export const joiValidation = {
@@ -46,5 +46,17 @@ export const joiValidation = {
         if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
         next();
     },
+    inputInsertion : (req: Request, _res: Response, next: NextFunction) => {
+        const request = req.body;
+        const validation = inputSchema.create.validate(request, {abortEarly: false});
+        if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
+        next();
+    },
+    inputUpdate : (req: Request, _res: Response, next: NextFunction) => {
+        const request = req.body;
+        const validation = inputSchema.update.validate(request, { abortEarly: false});
+        if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
+        next();
+    }
     
 }
