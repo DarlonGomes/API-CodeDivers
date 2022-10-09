@@ -23,7 +23,7 @@ export async function handleInputUpdate (req: Request, res: Response){
 }
 
 export async function handleInputDelete (req: Request, res: Response){
-    const {inputId} = req.body;
+    const {inputId} = req.query;
     const {userId} = res.locals.userId;
 
     await userService.ensureFieldIsValid("id", userId, "default");
@@ -32,8 +32,8 @@ export async function handleInputDelete (req: Request, res: Response){
     return res.status(204).json({message: "Deleted"})
 }
 
-export async function handleChallengeInputs (req: Request, res: Response){
-    const {challengeId} = req.body;
+export async function handleChallengeInputsDelete (req: Request, res: Response){
+    const {challengeId} = req.query;
     const {userId} = res.locals.userId;
 
     await userService.ensureFieldIsValid("id", userId, "default");

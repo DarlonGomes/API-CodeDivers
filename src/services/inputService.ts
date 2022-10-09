@@ -11,11 +11,11 @@ export async function gatherChallengeInputsAndOutputs ( challengeId: string){
     return inputList;
 }
 
-export async function handleInputRemotion ( id : string){
+export async function handleInputRemotion ( id : any){
     await inputRepository.remove(id);
 }
 
-export async function handleInputRemotionByChallenge ( challengeId: string){
+export async function handleInputRemotionByChallenge ( challengeId: any){
     await inputRepository.removeAllInputFromChallenge(challengeId);
 }
 

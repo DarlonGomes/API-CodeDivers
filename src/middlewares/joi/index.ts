@@ -46,9 +46,15 @@ export const joiValidation = {
         if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
         next();
     },
-    inputInserton : (req: Request, _res: Response, next: NextFunction) => {
+    inputInsertion : (req: Request, _res: Response, next: NextFunction) => {
         const request = req.body;
         const validation = inputSchema.create.validate(request, {abortEarly: false});
+        if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
+        next();
+    },
+    inputUpdate : (req: Request, _res: Response, next: NextFunction) => {
+        const request = req.body;
+        const validation = inputSchema.update.validate(request, { abortEarly: false});
         if(validation.error) throw new ErrorInfo("error_unprocessable_entity", validation.error.message);
         next();
     }
