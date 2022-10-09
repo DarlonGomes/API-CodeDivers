@@ -1,5 +1,4 @@
 import { Input } from "@prisma/client";
-import { Value } from "@prisma/client/runtime";
 import db from "../database/prisma";
 
 export async function findByChallenge (challenge: string){
