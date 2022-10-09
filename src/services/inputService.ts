@@ -1,9 +1,9 @@
 import { inputRepository } from "../repositories";
 import { Input } from "@prisma/client";
+import { ErrorInfo } from "../middlewares/error";
 
-
-export async function insertInputData ( challengeId: string, input: string, output:string){
-    await inputRepository.create(challengeId, input, output);
+export async function insertInputData (  input: string, output:string, challengeId: string,){
+    await inputRepository.create( input, output, challengeId,);
 }
 
 export async function gatherChallengeInputsAndOutputs ( challengeId: string){
@@ -22,4 +22,9 @@ export async function handleInputRemotionByChallenge ( challengeId: string){
 export async function updateAnExistingInput (field: string, value:string, id:string){
     const input = await inputRepository.update(field, value, id);
     return input
+}
+
+export async function ensureThatThisInputDoesNotExistInThisChallenge(input: string, output:string, challengeId:string){
+    const response : Input | null = await inputRepository.findByInputOutputChallengeId(input, output, challengeId);
+    if(response) throw new ErrorInfo("error_conflict", "This type os test already exist")    
 }

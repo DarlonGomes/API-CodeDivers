@@ -49,3 +49,14 @@ export async function update (field: string, value: string, id: string){
     });
     return response
 }
+
+export async function findByInputOutputChallengeId(input: string, output:string, challengeId: string){
+    const response : Input | null = await db.input.findFirst({
+        where:{
+            input: input,
+            output: output,
+            challengeId: challengeId
+        }
+    });
+    return response
+}

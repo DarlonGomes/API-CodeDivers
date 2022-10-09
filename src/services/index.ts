@@ -4,3 +4,4 @@ export * as methodService from "./methodService";
 export * as topicService from "./topicService";
 export * as challengeService from "./challengeService";
 export * as attemptService from "./attemptService";
+export * as inputService from "./inputService";
