@@ -47,3 +47,8 @@ export async function updateField(field: string, value: string, id:string){
     const account = await userRepository.update(field, value, id);
     return account
 }
+
+export async function searchForThisEmail(email: string){
+    const account = await userRepository.search("email", email)
+    if( account ) throw new ErrorInfo("error_conflict", "This e-mail is already taken");
+}

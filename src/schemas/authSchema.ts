@@ -16,5 +16,8 @@ export const authSchema = {
     update: Joi.object({
         field: Joi.string().required(),
         value: Joi.string().required()
+    }),
+    search: Joi.object({
+        email: Joi.string().email({ tlds: { allow: false } }).required()
     })
 }
