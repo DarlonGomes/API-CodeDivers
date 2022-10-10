@@ -32,3 +32,11 @@ export async function fieldUpdate(req: Request, res: Response){
 
     return res.status(204).json({message: `Your ${field} have been updated.`, account: account})
 }
+
+export async function handleEmailCheck(req: Request, res: Response){
+    const {email} : {email: string} = req.body;
+
+    await userService.searchForThisEmail(email);
+    
+    return res.sendStatus(200);
+}
