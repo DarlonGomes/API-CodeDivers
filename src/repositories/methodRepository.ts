@@ -22,6 +22,12 @@ export async function findTopics (id: string){
                     title: true,
                     methodId: true,
                     created_at: true,
+                    challenges:{
+                        select:{
+                            id: true,
+                            title: true
+                        }
+                    }
                 }
             }
         }, where:{

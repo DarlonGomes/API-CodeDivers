@@ -1,8 +1,9 @@
 import { ErrorInfo } from "../middlewares/error";
-import { challengeRepository } from "../repositories";
+import { challengeRepository, inputRepository } from "../repositories";
 import { InsertChallenge } from "../interfaces/challengeInterface";
-import { Challenge } from "@prisma/client";
+import { Challenge, Input } from "@prisma/client";
 import { attemptService } from ".";
+
 
 
 
@@ -30,14 +31,16 @@ export async function checkIfUserAlreadyMadeAnAttempt(user: string , challenge: 
 
 export async function gatherInfoAndAttemps(user: string , challenge: string | any){
     let response;
-
+ 
     response = await getChallengeById(challenge);
+
     const attempt = await checkIfUserAlreadyMadeAnAttempt(user, challenge);
-  
+    const tests : Input[] = await inputRepository.findByChallenge(challenge)
     if(!attempt){
         await attemptService.insertAttempt(user, challenge, response.code);
         return response
     }
+
     response.code = attempt.attempt
     return {...response, isSolved : attempt.isSolved}
 }
