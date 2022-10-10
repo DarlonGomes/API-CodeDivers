@@ -23,5 +23,5 @@ export async function gatherChallengeInfo (req: Request, res: Response){
     const challenge = await challengeService.gatherInfoAndAttemps(userId, id);
 
 
-    return res.status(200).json({message: "Succesfull", challenge})
+    return res.status(200).json({message: "Succesfull.", challenge})
 }
